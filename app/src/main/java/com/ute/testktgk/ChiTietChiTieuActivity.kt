@@ -1,8 +1,12 @@
 package com.ute.testktgk
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 class ChiTietChiTieuActivity : AppCompatActivity() {
@@ -13,6 +17,28 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
     private lateinit var btnQuayLai_226: Button
     private lateinit var btnChinhSua_226: Button
 
+    // Bien luu du lieu hien tai tren man hinh
+    private var tenHienTai_226: String = ""
+    private var soTienHienTai_226: String = ""
+    private var ghiChuHienTai_226: String = ""
+
+    // Dang ky Activity Result API
+    private val trinhNhanKetQua_226 = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { ketQua_226 ->
+        if (ketQua_226.resultCode == Activity.RESULT_OK) {
+            val duLieuTraVe_226 = ketQua_226.data
+            tenHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_TEN_226") ?: tenHienTai_226
+            soTienHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_SO_TIEN_226") ?: soTienHienTai_226
+            ghiChuHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_GHI_CHU_226") ?: ghiChuHienTai_226
+
+            capNhatGiaoDien_226()
+            Toast.makeText(this, "Cap nhat khoan chi thanh cong", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Da huy chinh sua", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chi_tiet_chi_tieu)
@@ -20,7 +46,7 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         supportActionBar?.title = "Nguyen Quang Nhat - 2415053122226 - Quan ly chi tieu ca nhan"
 
         anhXaView_226()
-        nhanVaHienThiDuLieu_226()
+        khoiTaoDuLieu_226()
         xuLySuKien_226()
     }
 
@@ -32,38 +58,48 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         btnChinhSua_226 = findViewById(R.id.btnChinhSua_226)
     }
 
-    private fun nhanVaHienThiDuLieu_226() {
-        val ten_226 = intent.getStringExtra("EXTRA_TEN_226")?.trim() ?: ""
-        val soTienChuoi_226 = intent.getStringExtra("EXTRA_SO_TIEN_226")?.trim() ?: ""
-        val ghiChu_226 = intent.getStringExtra("EXTRA_GHI_CHU_226")?.trim() ?: ""
+    private fun khoiTaoDuLieu_226() {
+        tenHienTai_226 = intent.getStringExtra("EXTRA_TEN_226")?.trim() ?: ""
+        soTienHienTai_226 = intent.getStringExtra("EXTRA_SO_TIEN_226")?.trim() ?: ""
+        ghiChuHienTai_226 = intent.getStringExtra("EXTRA_GHI_CHU_226")?.trim() ?: ""
 
-        // Kiem tra du lieu ten khoan chi
-        if (ten_226.isEmpty()) {
+        capNhatGiaoDien_226()
+    }
+
+    private fun capNhatGiaoDien_226() {
+        if (tenHienTai_226.isEmpty()) {
             tvHienThiTen_226.text = "Ten khoan chi: [Khong hop le / De trong]"
         } else {
-            tvHienThiTen_226.text = "Ten khoan chi: $ten_226"
+            tvHienThiTen_226.text = "Ten khoan chi: $tenHienTai_226"
         }
 
-        // Kiem tra du lieu so tien
-        val soTien_226 = soTienChuoi_226.toDoubleOrNull()
+        val soTien_226 = soTienHienTai_226.toDoubleOrNull()
         if (soTien_226 == null || soTien_226 <= 0) {
             tvHienThiSoTien_226.text = "So tien: [So tien khong hop le]"
         } else {
-            tvHienThiSoTien_226.text = "So tien: $soTienChuoi_226 VND"
+            tvHienThiSoTien_226.text = "So tien: $soTienHienTai_226 VND"
         }
 
-        // Ghi chu
-        if (ghiChu_226.isEmpty()) {
+        if (ghiChuHienTai_226.isEmpty()) {
             tvHienThiGhiChu_226.text = "Ghi chu: [Khong co ghi chu]"
         } else {
-            tvHienThiGhiChu_226.text = "Ghi chu: $ghiChu_226"
+            tvHienThiGhiChu_226.text = "Ghi chu: $ghiChuHienTai_226"
         }
     }
 
     private fun xuLySuKien_226() {
-        // Nut quay lai man hinh chinh
         btnQuayLai_226.setOnClickListener {
             finish()
+        }
+
+        // Mo man hinh ChinhSuaChiTieuActivity bang Activity Result API
+        btnChinhSua_226.setOnClickListener {
+            val yDinhChinhSua_226 = Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
+                putExtra("EXTRA_TEN_226", tenHienTai_226)
+                putExtra("EXTRA_SO_TIEN_226", soTienHienTai_226)
+                putExtra("EXTRA_GHI_CHU_226", ghiChuHienTai_226)
+            }
+            trinhNhanKetQua_226.launch(yDinhChinhSua_226)
         }
     }
 }
