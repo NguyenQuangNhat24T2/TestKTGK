@@ -44,41 +44,47 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun xuLySuKien_226() {
-        // Xu ly nut Them khoan chi
         btnThemKhoanChi_226.setOnClickListener {
             val tenKhoanChi_226 = edtTenKhoanChi_226.text.toString().trim()
             val soTienChuoi_226 = edtSoTien_226.text.toString().trim()
+            val ghiChu_226 = edtGhiChu_226.text.toString().trim()
 
             if (tenKhoanChi_226.isEmpty()) {
                 Toast.makeText(this, "Ten khoan chi khong duoc de trong", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (soTienChuoi_226.isEmpty()) {
-                Toast.makeText(this, "So tien khong duoc de trong", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            val soTien_226 = soTienChuoi_226.toDoubleOrNull() ?: -1.0
 
-            val soTien_226 = soTienChuoi_226.toDoubleOrNull()
-            if (soTien_226 == null || soTien_226 <= 0) {
+            // Khoi tao doi tuong tu lop KhoanChi - 226
+            val doiTuongKhoanChi_226 = KhoanChi(
+                maKhoanChi_226 = "KC_226_" + System.currentTimeMillis().toString().takeLast(4),
+                tenKhoanChi_226 = tenKhoanChi_226,
+                soTien_226 = soTien_226,
+                ghiChu_226 = ghiChu_226,
+                daThanhToan_226 = false
+            )
+
+            // Su dung ham kiem tra so tien hop le tu lop KhoanChi
+            if (!doiTuongKhoanChi_226.laSoTienHopLe_226()) {
                 Toast.makeText(this, "So tien phai lon hon 0", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "Them khoan chi thanh cong: $tenKhoanChi_226", Toast.LENGTH_SHORT).show()
+            // Su dung ham layThongTin tu lop KhoanChi de hien thi thong bao
+            Toast.makeText(this, "Them thanh cong: ${doiTuongKhoanChi_226.layThongTin_226()}", Toast.LENGTH_LONG).show()
         }
 
-        // Xu ly nut Xem chi tiet (chuan bi san de noi vao Cau 2)
         btnXemChiTiet_226.setOnClickListener {
             val tenKhoanChi_226 = edtTenKhoanChi_226.text.toString().trim()
             val soTienChuoi_226 = edtSoTien_226.text.toString().trim()
             val ghiChu_226 = edtGhiChu_226.text.toString().trim()
 
-            // Truyen du lieu sang ChiTietChiTieuActivity bang Intent
-            val yDinh_226 = Intent(this, ChiTietChiTieuActivity::class.java)
-            yDinh_226.putExtra("EXTRA_TEN_226", tenKhoanChi_226)
-            yDinh_226.putExtra("EXTRA_SO_TIEN_226", soTienChuoi_226)
-            yDinh_226.putExtra("EXTRA_GHI_CHU_226", ghiChu_226)
+            val yDinh_226 = Intent(this, ChiTietChiTieuActivity::class.java).apply {
+                putExtra("EXTRA_TEN_226", tenKhoanChi_226)
+                putExtra("EXTRA_SO_TIEN_226", soTienChuoi_226)
+                putExtra("EXTRA_GHI_CHU_226", ghiChu_226)
+            }
             startActivity(yDinh_226)
         }
     }
