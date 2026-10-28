@@ -36,6 +36,15 @@
         android:layout_height="wrap_content"
         android:text="Ghi chu: "
         android:textSize="16sp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvHienThiTrangThai_226"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trang thai: "
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:layout_marginBottom="24dp" />
 
     <Button
