@@ -33,13 +33,31 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
     }
 
     private fun nhanVaHienThiDuLieu_226() {
-        val ten_226 = intent.getStringExtra("EXTRA_TEN_226") ?: ""
-        val soTienChuoi_226 = intent.getStringExtra("EXTRA_SO_TIEN_226") ?: ""
-        val ghiChu_226 = intent.getStringExtra("EXTRA_GHI_CHU_226") ?: ""
+        val ten_226 = intent.getStringExtra("EXTRA_TEN_226")?.trim() ?: ""
+        val soTienChuoi_226 = intent.getStringExtra("EXTRA_SO_TIEN_226")?.trim() ?: ""
+        val ghiChu_226 = intent.getStringExtra("EXTRA_GHI_CHU_226")?.trim() ?: ""
 
-        tvHienThiTen_226.text = "Ten khoan chi: $ten_226"
-        tvHienThiSoTien_226.text = "So tien: $soTienChuoi_226 VND"
-        tvHienThiGhiChu_226.text = "Ghi chu: $ghiChu_226"
+        // Kiem tra du lieu ten khoan chi
+        if (ten_226.isEmpty()) {
+            tvHienThiTen_226.text = "Ten khoan chi: [Khong hop le / De trong]"
+        } else {
+            tvHienThiTen_226.text = "Ten khoan chi: $ten_226"
+        }
+
+        // Kiem tra du lieu so tien
+        val soTien_226 = soTienChuoi_226.toDoubleOrNull()
+        if (soTien_226 == null || soTien_226 <= 0) {
+            tvHienThiSoTien_226.text = "So tien: [So tien khong hop le]"
+        } else {
+            tvHienThiSoTien_226.text = "So tien: $soTienChuoi_226 VND"
+        }
+
+        // Ghi chu
+        if (ghiChu_226.isEmpty()) {
+            tvHienThiGhiChu_226.text = "Ghi chu: [Khong co ghi chu]"
+        } else {
+            tvHienThiGhiChu_226.text = "Ghi chu: $ghiChu_226"
+        }
     }
 
     private fun xuLySuKien_226() {
