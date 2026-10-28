@@ -14,15 +14,15 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
     private lateinit var tvHienThiTen_226: TextView
     private lateinit var tvHienThiSoTien_226: TextView
     private lateinit var tvHienThiGhiChu_226: TextView
+    private lateinit var tvHienThiTrangThai_226: TextView
     private lateinit var btnQuayLai_226: Button
     private lateinit var btnChinhSua_226: Button
 
-    // Bien luu du lieu hien tai tren man hinh
     private var tenHienTai_226: String = ""
     private var soTienHienTai_226: String = ""
     private var ghiChuHienTai_226: String = ""
+    private var daThanhToanHienTai_226: Boolean = false
 
-    // Dang ky Activity Result API
     private val trinhNhanKetQua_226 = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { ketQua_226 ->
@@ -31,6 +31,7 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
             tenHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_TEN_226") ?: tenHienTai_226
             soTienHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_SO_TIEN_226") ?: soTienHienTai_226
             ghiChuHienTai_226 = duLieuTraVe_226?.getStringExtra("RESULT_GHI_CHU_226") ?: ghiChuHienTai_226
+            daThanhToanHienTai_226 = duLieuTraVe_226?.getBooleanExtra("RESULT_DA_THANH_TOAN_226", false) ?: false
 
             capNhatGiaoDien_226()
             Toast.makeText(this, "Cap nhat khoan chi thanh cong", Toast.LENGTH_SHORT).show()
@@ -54,6 +55,7 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         tvHienThiTen_226 = findViewById(R.id.tvHienThiTen_226)
         tvHienThiSoTien_226 = findViewById(R.id.tvHienThiSoTien_226)
         tvHienThiGhiChu_226 = findViewById(R.id.tvHienThiGhiChu_226)
+        tvHienThiTrangThai_226 = findViewById(R.id.tvHienThiTrangThai_226)
         btnQuayLai_226 = findViewById(R.id.btnQuayLai_226)
         btnChinhSua_226 = findViewById(R.id.btnChinhSua_226)
     }
@@ -62,6 +64,7 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         tenHienTai_226 = intent.getStringExtra("EXTRA_TEN_226")?.trim() ?: ""
         soTienHienTai_226 = intent.getStringExtra("EXTRA_SO_TIEN_226")?.trim() ?: ""
         ghiChuHienTai_226 = intent.getStringExtra("EXTRA_GHI_CHU_226")?.trim() ?: ""
+        daThanhToanHienTai_226 = intent.getBooleanExtra("EXTRA_DA_THANH_TOAN_226", false)
 
         capNhatGiaoDien_226()
     }
@@ -85,6 +88,9 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
         } else {
             tvHienThiGhiChu_226.text = "Ghi chu: $ghiChuHienTai_226"
         }
+
+        val trangThai_226 = if (daThanhToanHienTai_226) "Da thanh toan" else "Chua thanh toan"
+        tvHienThiTrangThai_226.text = "Trang thai: $trangThai_226"
     }
 
     private fun xuLySuKien_226() {
@@ -92,12 +98,12 @@ class ChiTietChiTieuActivity : AppCompatActivity() {
             finish()
         }
 
-        // Mo man hinh ChinhSuaChiTieuActivity bang Activity Result API
         btnChinhSua_226.setOnClickListener {
             val yDinhChinhSua_226 = Intent(this, ChinhSuaChiTieuActivity::class.java).apply {
                 putExtra("EXTRA_TEN_226", tenHienTai_226)
                 putExtra("EXTRA_SO_TIEN_226", soTienHienTai_226)
                 putExtra("EXTRA_GHI_CHU_226", ghiChuHienTai_226)
+                putExtra("EXTRA_DA_THANH_TOAN_226", daThanhToanHienTai_226)
             }
             trinhNhanKetQua_226.launch(yDinhChinhSua_226)
         }
