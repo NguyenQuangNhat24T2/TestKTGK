@@ -71,13 +71,14 @@ class MainActivity : AppCompatActivity() {
         btnXemChiTiet_226.setOnClickListener {
             val tenKhoanChi_226 = edtTenKhoanChi_226.text.toString().trim()
             val soTienChuoi_226 = edtSoTien_226.text.toString().trim()
+            val ghiChu_226 = edtGhiChu_226.text.toString().trim()
 
-            if (tenKhoanChi_226.isEmpty() || soTienChuoi_226.isEmpty()) {
-                Toast.makeText(this, "Vui long nhap day du thong tin truoc khi xem chi tiet", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            Toast.makeText(this, "Chuan bi mo man hinh chi tiet", Toast.LENGTH_SHORT).show()
+            // Truyen du lieu sang ChiTietChiTieuActivity bang Intent
+            val yDinh_226 = Intent(this, ChiTietChiTieuActivity::class.java)
+            yDinh_226.putExtra("EXTRA_TEN_226", tenKhoanChi_226)
+            yDinh_226.putExtra("EXTRA_SO_TIEN_226", soTienChuoi_226)
+            yDinh_226.putExtra("EXTRA_GHI_CHU_226", ghiChu_226)
+            startActivity(yDinh_226)
         }
     }
 }
