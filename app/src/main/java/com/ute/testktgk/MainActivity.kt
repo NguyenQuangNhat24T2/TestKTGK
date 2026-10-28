@@ -64,4 +64,20 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "Them khoan chi
+            Toast.makeText(this, "Them khoan chi thanh cong: $tenKhoanChi_226", Toast.LENGTH_SHORT).show()
+        }
+
+        // Xu ly nut Xem chi tiet (chuan bi san de noi vao Cau 2)
+        btnXemChiTiet_226.setOnClickListener {
+            val tenKhoanChi_226 = edtTenKhoanChi_226.text.toString().trim()
+            val soTienChuoi_226 = edtSoTien_226.text.toString().trim()
+
+            if (tenKhoanChi_226.isEmpty() || soTienChuoi_226.isEmpty()) {
+                Toast.makeText(this, "Vui long nhap day du thong tin truoc khi xem chi tiet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            Toast.makeText(this, "Chuan bi mo man hinh chi tiet", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
